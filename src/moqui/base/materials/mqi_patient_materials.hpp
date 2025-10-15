@@ -3,7 +3,7 @@
 
 #include "../mqi_common.hpp"
 #include "../mqi_physics_constants.hpp"
-#include "materials/mqi_material.hpp"
+#include "mqi_material.hpp"
 #include <cassert>
 
 namespace mqi {

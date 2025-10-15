@@ -48,6 +48,9 @@ target_link_libraries(moqui_rev
     PRIVATE moqui_rev_lib
 )
 
+# TPS Environment
+add_subdirectory(tps_env)
+
 # Tests
 enable_testing()
 add_subdirectory(tests)

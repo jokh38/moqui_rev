@@ -8,7 +8,7 @@ namespace mqi
 ///\ check last CUDA error
 /// this is not to type __CUDACC__ directive, so use at it is in the code
 inline void
-check_cuda_last_error(const char* msg) {
+check_cuda_last_error([[maybe_unused]] const char* msg) {
 
 #if defined(__CUDACC__)
 

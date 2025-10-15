@@ -15,7 +15,7 @@
 
 #include "../mqi_matrix.hpp"
 #include "../mqi_vec.hpp"
-#include "distributions/mqi_pdfMd.hpp"
+#include "mqi_pdfMd.hpp"
 
 namespace mqi {
 

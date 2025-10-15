@@ -3,9 +3,9 @@
 
 #include <fstream>
 #include <iostream>
-#include <moqui/base/mqi_node.hpp>
-#include <moqui/base/mqi_scorer.hpp>
-#include <mqi_variables.hpp>
+#include "../base/mqi_node.hpp"
+#include "../base/mqi_scorer.hpp"
+#include "mqi_variables.hpp"
 
 namespace mc {
 

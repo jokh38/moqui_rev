@@ -14,7 +14,7 @@ struct key_value {
 
 void init_table(key_value *table, uint32_t max_capacity) {
   //// Multithreading?
-  for (int i = 0; i < max_capacity; i++) {
+  for (uint32_t i = 0; i < max_capacity; i++) {
     table[i].key1 = mqi::empty_pair;
     table[i].key2 = mqi::empty_pair;
     table[i].value = 0;

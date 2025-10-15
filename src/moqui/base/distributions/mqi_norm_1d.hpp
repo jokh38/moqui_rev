@@ -6,7 +6,7 @@
 ///
 /// Distribution functions for 1D normal distribution
 
-#include "distributions/mqi_pdfMd.hpp"
+#include "mqi_pdfMd.hpp"
 
 namespace mqi {
 /// \class norm_1d

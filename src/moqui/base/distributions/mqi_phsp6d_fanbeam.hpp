@@ -6,7 +6,7 @@
 ///
 /// Distribution functions (meta-header file for all distributions)
 
-#include "distributions/mqi_pdfMd.hpp"
+#include "mqi_pdfMd.hpp"
 
 namespace mqi {
 

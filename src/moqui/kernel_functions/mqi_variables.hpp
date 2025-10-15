@@ -1,6 +1,6 @@
 #ifndef MQI_VARIABLES_HPP
 #define MQI_VARIABLES_HPP
-#include <mqi_kernel_functions.hpp>
+#include "mqi_kernel_functions.hpp"
 
 ///< This file will be deleted soon. (JW: Jan 20, 2021)
 

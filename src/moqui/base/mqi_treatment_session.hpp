@@ -16,8 +16,8 @@
 #include "mqi_treatment_machine.hpp"
 #include "mqi_treatment_machine_pbs.hpp" //generic treatment machine
 #include "mqi_utils.hpp"
-#include <moqui/treatment_machines/mqi_treatment_machine_smc_gtr1.hpp" // SMC PBS multi-purpose nozzle
-#include <moqui/treatment_machines/mqi_treatment_machine_smc_gtr2.hpp" // SMC PBS dedicated nozzle
+#include "../treatment_machines/mqi_treatment_machine_smc_gtr1.hpp" // SMC PBS multi-purpose nozzle
+#include "../treatment_machines/mqi_treatment_machine_smc_gtr2.hpp" // SMC PBS dedicated nozzle
 
 namespace mqi {
 

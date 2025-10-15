@@ -3,7 +3,7 @@
 
 #include "../mqi_material.hpp"
 #include "../mqi_track.hpp"
-#include "mqi_grid3d.hpp"
+#include "../mqi_grid3d.hpp"
 
 namespace mqi {
 

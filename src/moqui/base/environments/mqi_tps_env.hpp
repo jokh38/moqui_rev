@@ -1,8 +1,8 @@
 #ifndef MQI_TPS_RAY_ENV_HPP
 #define MQI_TPS_RAY_ENV_HPP
 
-#include "environments/mqi_xenvironment.hpp"
-#include "scorers/mqi_scorer_energy_deposit.hpp"
+#include "mqi_xenvironment.hpp"
+#include "../scorers/mqi_scorer_energy_deposit.hpp"
 
 #include "../mqi_aperture.hpp"
 #include "../mqi_distributions.hpp"
@@ -27,9 +27,9 @@
 #include "gdcmStringFilter.h"
 #include "gdcmTag.h"
 #include "gdcmTesting.h"
-#include "materials/mqi_patient_materials.hpp"
-#include "mqi_aperture3d.hpp"
-#include "scorers/mqi_scorer_energy_deposit.hpp"
+#include "../materials/mqi_patient_materials.hpp"
+#include "../mqi_aperture3d.hpp"
+#include "../scorers/mqi_scorer_energy_deposit.hpp"
 #include <cassert>
 #include <chrono>
 #include <ctime>
@@ -768,7 +768,7 @@ public:
             // Get beam energy from file name string
             std::string logBeamEnergyString = filename.filename().string();
             logBeamEnergyString = logBeamEnergyString.substr(
-                0, logBeamEnergyString.find('.csv') - 1);
+                0, logBeamEnergyString.find(".csv") - 1);
             logBeamEnergyString =
                 logBeamEnergyString.substr(logBeamEnergyString.find('_') + 1,
                                            logBeamEnergyString.find('M') - 2);

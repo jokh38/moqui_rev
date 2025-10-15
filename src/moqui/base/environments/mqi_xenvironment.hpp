@@ -15,8 +15,8 @@
 #include "../mqi_scorer.hpp"
 #include "../mqi_threads.hpp"
 #include "../mqi_track.hpp"
-#include "materials/mqi_material.hpp"
-#include <kernel_functions/mqi_kernel_functions.hpp>
+#include "../materials/mqi_material.hpp"
+#include "../../kernel_functions/mqi_kernel_functions.hpp"
 
 namespace mqi {
 
