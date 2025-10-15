@@ -1,5 +1,5 @@
-#include "mqi_phase4_plugin_system.hpp"
-#include "mqi_phase4_voxel_bvh.hpp"
+#include "mqi_plugin_system.hpp"
+#include "mqi_voxel_bvh.hpp"
 #include <algorithm>
 #include <chrono>
 #include <filesystem>

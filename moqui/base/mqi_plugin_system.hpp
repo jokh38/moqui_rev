@@ -9,7 +9,7 @@
 /// loading of different geometry modules with performance/accuracy trade-offs.
 
 #include "mqi_common.hpp"
-#include "mqi_phase4_geometry_interface.hpp"
+#include "mqi_geometry_interface.hpp"
 #include <functional>
 #include <memory>
 #include <mutex>

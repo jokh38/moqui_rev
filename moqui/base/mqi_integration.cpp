@@ -1,4 +1,4 @@
-#include "mqi_phase1_integration.hpp"
+#include "mqi_integration.hpp"
 #include <chrono>
 #include <cstring>
 #include <iomanip>

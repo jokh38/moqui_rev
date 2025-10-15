@@ -37,3 +37,4 @@ Testing/
 # Temporary files
 *.tmp
 *.temp
+data/output/

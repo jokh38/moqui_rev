@@ -1,4 +1,4 @@
-#include "mqi_phase3_coarse_to_fine.hpp"
+#include "mqi_coarse_to_fine.hpp"
 #include <chrono>
 #include <cstring>
 #include <iostream>

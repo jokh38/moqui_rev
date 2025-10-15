@@ -10,7 +10,7 @@
 /// coarse-to-fine filtering.
 
 #include "mqi_common.hpp"
-#include "mqi_phase4_geometry_interface.hpp"
+#include "mqi_geometry_interface.hpp"
 #include "mqi_vec.hpp"
 #include <array>
 #include <memory>

@@ -1,4 +1,4 @@
-#include "mqi_phase2_memory_optimization.hpp"
+#include "mqi_memory_optimization.hpp"
 #include "mqi_error_check.hpp"
 #include "mqi_math.hpp"
 #include <algorithm>

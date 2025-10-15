@@ -9,7 +9,7 @@
 /// creation and coarse filtering in radiation therapy geometry.
 
 #include "mqi_common.hpp"
-#include "mqi_phase4_geometry_interface.hpp"
+#include "mqi_geometry_interface.hpp"
 #include "mqi_vec.hpp"
 #include <array>
 #include <memory>

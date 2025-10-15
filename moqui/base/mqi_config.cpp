@@ -1,4 +1,4 @@
-#include "mqi_phase4_config.hpp"
+#include "mqi_config.hpp"
 #include <algorithm>
 #include <cmath>
 #include <fstream>

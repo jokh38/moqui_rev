@@ -5,6 +5,16 @@
 
 namespace mqi {
 
+// Physics constants namespace for global access
+namespace physics {
+  template <typename R>
+  constexpr R NEAR_ZERO = static_cast<R>(1e-7);
+  template <typename R>
+  constexpr R MIN_STEP_SIZE = static_cast<R>(1e-6);
+  template <typename R>
+  constexpr R GEOMETRY_TOLERANCE = static_cast<R>(1e-6);
+}
+
 /*
         Water: RadL = 36.093 cm, Nucl.Int.Lengh = 75.375 cm
         electromagnetic coupling = 1.43996e-12 MeV*mm/(eplus^2) , eplus  =1
@@ -35,6 +45,13 @@ template <typename R> struct physics_constants {
   const R radiation_length_water = 36.0863 * cm; // mm 360.863
   const R mev_to_joule = 1.60218e-13;            // J/MeV
 };
+
+// Explicit template instantiations for commonly used types
+template struct physics_constants<float>;
+template struct physics_constants<double>;
+
+// Note: Template variables are defined as constexpr templates above
+// No explicit instantiations needed for constexpr template variables
 
 } // namespace mqi
 #endif

@@ -6,7 +6,7 @@
 /// A header including CUDA related headers and functions
 
 #include "mqi_common.hpp"
-#include "mqi_config.hpp"
+#include "mqi_physics_constants.hpp"
 
 #include <cmath>
 #include <mutex>
@@ -15,9 +15,9 @@
 namespace mqi {
 
 // const float near_zero = 0.0000001;
-const float near_zero = mqi::physics::NEAR_ZERO;
-const float min_step = mqi::physics::MIN_STEP_SIZE;
-const float geometry_tolerance = mqi::physics::GEOMETRY_TOLERANCE;
+const float near_zero = mqi::physics::NEAR_ZERO<float>;
+const float min_step = mqi::physics::MIN_STEP_SIZE<float>;
+const float geometry_tolerance = mqi::physics::GEOMETRY_TOLERANCE<float>;
 
 ///< TODO: Implement CUDA-specific infinity constants
 const float m_inf = -1.0 * HUGE_VALF;
@@ -99,8 +99,8 @@ typedef curandState_t mqi_rng;
 typedef std::default_random_engine mqi_rng;
 #endif
 
-// Note: Template specializations are now defined in mqi_math.cpp
-// to avoid multiple definition errors during linking
+// Note: Template specializations are defined in mqi_math.cpp
+// No explicit template instantiation declarations needed
 
 } // namespace mqi
 

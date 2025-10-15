@@ -202,4 +202,7 @@ double mqi_exponential<double>(mqi_rng *rng, double avg, double up) {
 
 #endif
 
+// Note: Functions are defined as template specializations above
+// No explicit template instantiations needed for template specializations
+
 } // namespace mqi

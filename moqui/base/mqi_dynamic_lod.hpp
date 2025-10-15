@@ -10,10 +10,11 @@
 
 #include "mqi_common.hpp"
 #include "mqi_config.hpp"
-#include "mqi_phase4_geometry_interface.hpp"
+#include "mqi_geometry_interface.hpp"
 #include <array>
 #include <memory>
 #include <vector>
+#include <mutex>
 
 namespace mqi {
 

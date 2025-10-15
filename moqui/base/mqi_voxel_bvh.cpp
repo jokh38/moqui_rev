@@ -1,4 +1,4 @@
-#include "mqi_phase4_voxel_bvh.hpp"
+#include "mqi_voxel_bvh.hpp"
 #include "mqi_math.hpp"
 #include <algorithm>
 #include <cmath>

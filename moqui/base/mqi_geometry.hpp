@@ -39,16 +39,12 @@ typedef enum {
 class geometry {
 
 public:
-  const mqi::vec3<float> pos;   ///< position, public access
-  const mqi::mat3x3<float> rot; ///< rotation, public access
-  const geometry_type geotype;  ///< geometry type, public access
-
   /// Constructor
   /// \param p_xyz position vector
   /// \param rot_xyz rotation matrix 3x3
   geometry(mqi::vec3<float> &p_xyz, mqi::mat3x3<float> &rot_xyz,
            mqi::geometry_type t)
-      : pos(p_xyz), rot(rot_xyz), geotype(t) {
+      : geotype(t), pos(p_xyz), rot(rot_xyz) {
     ;
   }
 
@@ -57,7 +53,7 @@ public:
   /// \param rot_xyz rotation matrix 3x3
   geometry(const mqi::vec3<float> &p_xyz, const mqi::mat3x3<float> &rot_xyz,
            const mqi::geometry_type t)
-      : pos(p_xyz), rot(rot_xyz), geotype(t) {
+      : geotype(t), pos(p_xyz), rot(rot_xyz) {
     ;
   }
 
@@ -71,10 +67,21 @@ public:
   const geometry &operator=(const mqi::geometry &rhs) { return rhs; }
 
   /// Destructor
-  ~geometry() { ; }
+  virtual ~geometry() { ; }
 
   /// Prints geometry information
   virtual void dump() const { ; }
+
+  const geometry_type geotype;  ///< geometry type, public access
+  const mqi::vec3<float> pos;   ///< position, public access
+  const mqi::mat3x3<float> rot; ///< rotation, public access
+
+  // Getter methods for encapsulation
+  const geometry_type& get_type() const { return geotype; }
+  const mqi::vec3<float>& get_position() const { return pos; }
+  const mqi::mat3x3<float>& get_rotation() const { return rot; }
+
+private:
 };
 
 } // namespace mqi

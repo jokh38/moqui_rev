@@ -12,9 +12,9 @@
 /// architecture.
 
 #include "mqi_persistent_threads.hpp"
-#include "mqi_phase1_integration.hpp"
-#include "mqi_phase2_memory_optimization.hpp"
-#include "mqi_phase3_coarse_to_fine.hpp"
+#include "mqi_integration.hpp"
+#include "mqi_memory_optimization.hpp"
+#include "mqi_coarse_to_fine.hpp"
 #include "mqi_track.hpp"
 #include "mqi_work_queue.hpp"
 #include <memory>
