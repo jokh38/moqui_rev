@@ -85,18 +85,34 @@ moqui_rev/
 **Target Name**: `moqui_rev` (defined in root CMakeLists.txt)
 **Purpose**: Basic executable that links with the moqui_rev_lib
 
-## Compilation Process
+## Current Build Configuration
 
 ### TPS Environment Compilation
+
+**Important Note**: The current codebase should only build `tps_env/tps_env.cpp`. Other compilation issues are not relevant for the current build process.
 
 The `tps_env/tps_env.cpp` file is compiled by CMake through the following process:
 
 1. **Root CMakeLists.txt** sets up the project configuration
 2. **tps_env/CMakeLists.txt** defines the `tps_env` executable target
-3. CMake compiles `tps_env.cpp` and links it with:
-   - Moqui simulation engine libraries (from moqui/)
+3. **moqui_tps.in** serves as the configuration file for the TPS environment
+4. CMake compiles `tps_env.cpp` and links it with:
+   - Main moqui program libraries (from moqui/)
    - Required dependencies (GDCM, CUDA runtime if available)
    - System libraries
+
+### Build Files Used
+- **CMakeLists.txt**: Main CMake configuration file
+- **moqui_tps.in**: Configuration file used by tps_env.cpp
+- **tps_env/CMakeLists.txt**: TPS environment specific CMake configuration
+- **tps_env/tps_env.cpp**: Only source file that needs to be compiled
+
+### Configuration File
+The `moqui_tps.in` file contains the TPS environment configuration that:
+- Defines simulation parameters
+- Specifies input data paths
+- Sets up treatment machine parameters
+- Configures Monte Carlo simulation settings
 
 ### Dependencies
 
