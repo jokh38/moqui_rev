@@ -36,7 +36,9 @@ add_library(moqui_rev_lib
 target_include_directories(moqui_rev_lib
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:moqui>
 )
 
 # Executable

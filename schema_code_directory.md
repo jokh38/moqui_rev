@@ -40,9 +40,9 @@ moqui_rev/
 │   └── tps_env.cpp                  # Main entry point for TPS simulation
 ├── src/                             # Source files
 │   ├── main.cpp                     # Original main executable (basic)
-│   ├── library.cpp                  # Library implementation
-│   └── moqui/                       # Moqui simulation engine
-│       ├── base/                    # Core simulation components
+│   └── library.cpp                  # Library implementation
+├── moqui/                           # Moqui simulation engine
+│   ├── base/                        # Core simulation components
 │       │   ├── environments/        # Environment classes
 │       │   │   ├── mqi_tps_env.hpp # TPS environment definition
 │       │   │   ├── mqi_phantom_env.hpp
@@ -94,14 +94,14 @@ The `tps_env/tps_env.cpp` file is compiled by CMake through the following proces
 1. **Root CMakeLists.txt** sets up the project configuration
 2. **tps_env/CMakeLists.txt** defines the `tps_env` executable target
 3. CMake compiles `tps_env.cpp` and links it with:
-   - Moqui simulation engine libraries (from src/moqui/)
+   - Moqui simulation engine libraries (from moqui/)
    - Required dependencies (GDCM, CUDA runtime if available)
    - System libraries
 
 ### Dependencies
 
 The TPS environment depends on:
-- **Moqui Base Library**: Core simulation framework (src/moqui/base/)
+- **Moqui Base Library**: Core simulation framework (moqui/base/)
 - **GDCM Library**: DICOM medical imaging support
 - **CUDA Runtime**: GPU acceleration support (when compiled with CUDA)
 - **Standard C++ Libraries**: iostream, chrono, etc.
@@ -141,5 +141,5 @@ The program will:
 - The main simulation logic is implemented in the `mqi::tps_env` class
 - The executable in `tps_env/` serves as the primary interface
 - The original `src/main.cpp` provides a basic example executable
-- All core simulation components are located in `src/moqui/base/`
-- CUDA kernels and GPU-related code are in `src/moqui/kernel_functions/`
+- All core simulation components are located in `moqui/base/`
+- CUDA kernels and GPU-related code are in `moqui/kernel_functions/`

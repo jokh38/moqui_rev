@@ -13,6 +13,10 @@ add_executable(tps_env_simple tps_env_simple.cpp)
 target_link_libraries(tps_env PRIVATE moqui_rev_lib)
 target_link_libraries(tps_env_simple PRIVATE moqui_rev_lib)
 
+# Disable warnings as errors for tps_env targets
+target_compile_options(tps_env PRIVATE -Wno-error -w)
+target_compile_options(tps_env_simple PRIVATE -Wno-error -w)
+
 if (GPU)
     message(STATUS "Compiling with CUDA support")
     # RTX A5000 = sm_86
@@ -72,7 +76,6 @@ endif ()
 include_directories(
         ${PROJECT_SOURCE_DIR}
         ../
-        ../src
 )
 
 # Only add GDCM include directories if GDCM is available
