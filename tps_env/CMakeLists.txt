@@ -101,6 +101,7 @@ if(GDCM_AVAILABLE)
             gdcmIOD
             gdcmMSFF
             gdcmjpeg16
+            z
             )
 else()
     target_link_libraries(tps_env PRIVATE

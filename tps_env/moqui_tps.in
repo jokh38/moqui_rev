@@ -5,11 +5,11 @@ GPUID 2 # 0-9 number
 RandomSeed -1932780356 # (integer, use negative value if use current time)
 UseAbsolutePath false
 TotalThreads -1 #(Integer, use negative value for using optimized number of threads)
-MaxHistoriesPerBatch 100000000
+MaxHistoriesPerBatch 100
 Verbosity 0
 
 ## Data directories
-ParentDir data/E070_E134_1 # parent directory of DICOM files
+ParentDir data/spotplan # parent directory of DICOM files
 DicomDir plan # directory of the DICOM
 logFilePath log
 
@@ -49,12 +49,12 @@ ROIName External
 SourceType FluenceMap
 SimulationType perBeam
 BeamNumbers 0
-ParticlesPerHistory 1 # Scale factor to select the number of primary particles
+ParticlesPerHistory 0.0001 # Scale factor to select the number of primary particles
 
 ## Not implemented yet
 ScoreToCTGrid true
 
 ## Output path
-OutputDir Output/E070_E134_1_3090 # output directory
+OutputDir data/output/spotplan_3090 # output directory
 OutputFormat raw # output format (raw, mhd, mha, npz)
 OverwriteResults true

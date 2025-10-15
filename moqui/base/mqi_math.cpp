@@ -186,6 +186,7 @@ template <> float mqi_exponential<float>(mqi_rng *rng, float avg, float up) {
   //    do {
   //        x = dist(*rng);
   //    } while (x > up || x <= 0);
+  (void)up; // Suppress unused parameter warning
   return x;
 }
 

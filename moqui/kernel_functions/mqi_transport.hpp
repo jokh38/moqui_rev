@@ -97,7 +97,7 @@ CUDA_GLOBAL void transport_particles_patient(
 
   const mqi::vec2<uint32_t> h_range =
       mqi::start_and_length(total_threads, n_vtx, thread_id);
-  mqi::mqi_rng *thread_rng = &threads[thread_id].rnd_generator;
+  mqi::mqi_rng *thread_rng = reinterpret_cast<mqi::mqi_rng*>(&threads[thread_id].rnd_generator);
   R process;
   mqi::fippel_physics<R> fippel;
   mqi::h2o_t<R> water; // 1e-3 g/mm^3
@@ -245,7 +245,7 @@ CUDA_GLOBAL void transport_particles_patient_seed(
 
   const mqi::vec2<uint32_t> h_range =
       mqi::start_and_length(total_threads, n_vtx, thread_id);
-  mqi::mqi_rng *thread_rng = &threads[thread_id].rnd_generator;
+  mqi::mqi_rng *thread_rng = reinterpret_cast<mqi::mqi_rng*>(&threads[thread_id].rnd_generator);
   R process;
   mqi::fippel_physics<R> fippel;
   mqi::h2o_t<R> water; // 1e-3 g/mm^3
