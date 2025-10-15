@@ -7,12 +7,29 @@ on:
     branches: [ main, master ]
 
 jobs:
-  ci:
-    uses: YOUR-ORG/github-cicd-templates/.github/workflows/cpp-ci-reusable.yaml@v1
-    with:
-      build-type: 'Release'
-      cpp-compiler: 'g++'
-      run-tests: true
-      enable-cache: true
-      runner-type: 'ubuntu-latest'
-      use-ninja: true
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential libgdcm-dev
+
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: |
+        cd build
+        make -j$(nproc)
+
+    - name: Test
+      run: |
+        cd build
+        ctest --output-on-failure
