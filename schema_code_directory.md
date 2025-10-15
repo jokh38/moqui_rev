@@ -70,7 +70,7 @@ moqui_rev/
 - Initializes `mqi::tps_env` from an input file
 - Runs the simulation with timing measurement
 - Serves as the primary command-line interface for the Moqui engine
-- Default input file: `./moqui_tps.in`
+- Default input file: `./tps_env/moqui_tps.in`
 - Accepts command-line argument for custom input file path
 
 **Key Features**:
@@ -95,7 +95,7 @@ The `tps_env/tps_env.cpp` file is compiled by CMake through the following proces
 
 1. **Root CMakeLists.txt** sets up the project configuration
 2. **tps_env/CMakeLists.txt** defines the `tps_env` executable target
-3. **moqui_tps.in** serves as the configuration file for the TPS environment
+3. **tps_env/moqui_tps.in** serves as the configuration file for the TPS environment
 4. CMake compiles `tps_env.cpp` and links it with:
    - Main moqui program libraries (from moqui/)
    - Required dependencies (GDCM, CUDA runtime if available)
@@ -103,12 +103,12 @@ The `tps_env/tps_env.cpp` file is compiled by CMake through the following proces
 
 ### Build Files Used
 - **CMakeLists.txt**: Main CMake configuration file
-- **moqui_tps.in**: Configuration file used by tps_env.cpp
+- **tps_env/moqui_tps.in**: Configuration file used by tps_env.cpp
 - **tps_env/CMakeLists.txt**: TPS environment specific CMake configuration
 - **tps_env/tps_env.cpp**: Only source file that needs to be compiled
 
 ### Configuration File
-The `moqui_tps.in` file contains the TPS environment configuration that:
+The `tps_env/moqui_tps.in` file contains the TPS environment configuration that:
 - Defines simulation parameters
 - Specifies input data paths
 - Sets up treatment machine parameters

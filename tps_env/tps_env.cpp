@@ -48,7 +48,7 @@ main(int argc, char* argv[]) {
     if (argc > 1) {
         input_file = argv[1];
     } else {
-        input_file = "./moqui_tps.in";
+        input_file = "./tps_env/moqui_tps.in";
     }
     mqi::tps_env<phsp_t> myenv(input_file);
     myenv.initialize_and_run();

@@ -6,16 +6,11 @@ option(GPU "Enable GPU support" OFF)
 # Build tps_env executable
 add_executable(tps_env tps_env.cpp)
 
-# Build simplified tps_env executable for testing
-add_executable(tps_env_simple tps_env_simple.cpp)
-
 # Link with basic libraries for now
 target_link_libraries(tps_env PRIVATE moqui_rev_lib)
-target_link_libraries(tps_env_simple PRIVATE moqui_rev_lib)
 
 # Disable warnings as errors for tps_env targets
 target_compile_options(tps_env PRIVATE -Wno-error -w)
-target_compile_options(tps_env_simple PRIVATE -Wno-error -w)
 
 if (GPU)
     message(STATUS "Compiling with CUDA support")
