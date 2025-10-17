@@ -26,7 +26,7 @@ GantryNum 1
 UsingPhantomGeo true
 
 ## While you use phantom geometry, program with two centimeter mode can get exact 2 cm position slice dose
-TwoCentimeterMode false
+TwoCentimeterMode true
 
 ## Phantom information. Two centimeter mode overrides this setting (no effect).
 PhantomDimX 180

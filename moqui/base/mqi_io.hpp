@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <iomanip> // std::setprecision
 #include <iostream>
+#include <limits>   // std::numeric_limits
 #include <numeric> //accumulate
 #include <valarray>
 #include <zlib.h>
@@ -740,19 +741,31 @@ void mqi::io::save_to_dcm(const mqi::node_t<R> *child, const double *src,
       int z_index = -1;
 
       // Bounds checking for 2cm mode
-      if (nxyz.z < 2) {
+      if (nxyz.z < 1) {
           std::cerr << "Error: Insufficient number of slices for 2CM mode" << std::endl;
           return;
       }
 
-      for(int i = 0; i < nxyz.z - 1; ++i) {
-          if (geo.get_z_edges()[i] <= z0 + 20.0f && geo.get_z_edges()[i+1] > z0 + 20.0f) {
-              z_index = i;
-              break;
+      // In TwoCentimeterMode, we expect a single slice at the 2cm position
+      // Use the middle slice (index 0) for single-slice geometry
+      if (nxyz.z == 1) {
+          z_index = 0;
+      } else {
+          // Search for slice closest to 20mm depth
+          float target_depth = 20.0f;
+          float min_distance = std::numeric_limits<float>::max();
+          for(int i = 0; i < nxyz.z; ++i) {
+              float slice_center = (geo.get_z_edges()[i] + geo.get_z_edges()[i+1]) / 2.0f;
+              float distance = std::abs(slice_center - target_depth);
+              if (distance < min_distance) {
+                  min_distance = distance;
+                  z_index = i;
+              }
           }
       }
+
       if (z_index == -1) {
-          std::cerr << "Error: could not find 2cm slice at 20cm depth" << std::endl;
+          std::cerr << "Error: could not determine appropriate slice for 2CM mode" << std::endl;
           return;
       }
 
