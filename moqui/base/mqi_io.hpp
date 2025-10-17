@@ -17,8 +17,19 @@
 #include "mqi_roi.hpp"
 #include "mqi_scorer.hpp"
 #include "mqi_sparse_io.hpp"
+#include "mqi_dicom.hpp"
+
+// DCMTK headers
+#include <dcmtk/dcmdata/dctk.h>
+#include <dcmtk/dcmdata/dcfilefo.h>
+#include <dcmtk/dcmdata/dcdeftag.h>
+#include <dcmtk/dcmdata/dcdatset.h>
+#include <dcmtk/ofstd/ofcond.h>
+#include <dcmtk/ofstd/ofstring.h>
+
 
 namespace mqi {
+
 namespace io {
 ///<  save scorer data to a file in binary format
 ///<  scr: scorer pointer
@@ -63,6 +74,13 @@ template <typename R>
 void save_to_mha(const mqi::node_t<R> *children, const double *src,
                  const R scale, const std::string &filepath,
                  const std::string &filename, const uint32_t length);
+
+template <typename R>
+void save_to_dcm(const mqi::node_t<R> *child, const double *src, const R scale,
+                 const std::string &filepath, const std::string &filename,
+                 const uint32_t length, const mqi::dicom_t &dcm_info,
+                 bool two_cm_mode);
+
 } // namespace io
 } // namespace mqi
 
@@ -590,6 +608,143 @@ void mqi::io::save_to_mha(const mqi::node_t<R> *children, const double *src,
   fid_header.close();
   if (!fid_header.good()) {
     std::cout << "Error occurred at writing time!" << std::endl;
+  }
+}
+
+
+template <typename R>
+void mqi::io::save_to_dcm(const mqi::node_t<R> *child, const double *src,
+                          const R scale, const std::string &filepath,
+                          const std::string &filename, const uint32_t length,
+                          const mqi::dicom_t &dcm_info, bool two_cm_mode) {
+  DcmFileFormat fileformat;
+  DcmDataset *dataset = fileformat.getDataset();
+
+  // Helper lambda to add or insert a new element
+  auto put_string = [&](const DcmTagKey &tag, const std::string &value) {
+    dataset->putAndInsertString(tag, value.c_str());
+  };
+
+  // Read the source RTPLAN file to copy metadata
+  DcmFileFormat plan_ff;
+  if (!plan_ff.loadFile(dcm_info.plan_name.c_str()).good()) {
+    std::cerr << "Error: cannot read RTPLAN file: " << dcm_info.plan_name << std::endl;
+    return;
+  }
+  DcmDataset *plan_dataset = plan_ff.getDataset();
+
+  // Copy patient and study information
+  OFString patient_name, patient_id, study_instance_uid, series_instance_uid_plan, frame_of_reference_uid;
+  plan_dataset->findAndGetOFString(DCM_PatientName, patient_name);
+  plan_dataset->findAndGetOFString(DCM_PatientID, patient_id);
+  plan_dataset->findAndGetOFString(DCM_StudyInstanceUID, study_instance_uid);
+  plan_dataset->findAndGetOFString(DCM_SeriesInstanceUID, series_instance_uid_plan);
+  plan_dataset->findAndGetOFString(DCM_FrameOfReferenceUID, frame_of_reference_uid);
+
+  put_string(DCM_PatientName, patient_name.c_str());
+  put_string(DCM_PatientID, patient_id.c_str());
+  put_string(DCM_StudyInstanceUID, study_instance_uid.c_str());
+  put_string(DCM_FrameOfReferenceUID, frame_of_reference_uid.c_str());
+
+  // SOP Class and Instance UID
+  put_string(DCM_SOPClassUID, UID_RTDoseStorage);
+  char new_uid[100];
+  dcmGenerateUniqueIdentifier(new_uid, SITE_INSTANCE_UID_ROOT);
+  put_string(DCM_SOPInstanceUID, new_uid);
+  dcmGenerateUniqueIdentifier(new_uid, SITE_INSTANCE_UID_ROOT);
+  put_string(DCM_SeriesInstanceUID, new_uid);
+
+
+  // Dose information
+  put_string(DCM_DoseUnits, "GY");
+  put_string(DCM_DoseType, "PHYSICAL");
+
+  // Dose Grid Scaling: find max dose to set the scale
+  double max_dose = 0.0;
+  for (uint32_t i = 0; i < length; ++i) {
+    if (src[i] > max_dose) {
+      max_dose = src[i];
+    }
+  }
+
+  double dose_grid_scaling = (max_dose * scale) / 65535.0;
+  dataset->putAndInsertFloat64(DCM_DoseGridScaling, dose_grid_scaling);
+
+  // Geometry Information
+  const auto &geo = child->geo[0];
+  const auto &nxyz = geo.get_nxyz();
+  float dx = geo.get_x_edges()[1] - geo.get_x_edges()[0];
+  float dy = geo.get_y_edges()[1] - geo.get_y_edges()[0];
+  float z0 = geo.get_z_edges()[0];
+
+  put_string(DCM_ImageOrientationPatient, "1\\0\\0\\0\\1\\0");
+  dataset->putAndInsertUint16(DCM_Rows, nxyz.y);
+  dataset->putAndInsertUint16(DCM_Columns, nxyz.x);
+
+  char buffer[64];
+  sprintf(buffer, "%f\\%f", dy, dx);
+  put_string(DCM_PixelSpacing, buffer);
+
+  if (two_cm_mode) {
+      dataset->putAndInsertUint16(DCM_NumberOfFrames, 1);
+      int z_index = -1;
+      for(int i=0; i<nxyz.z; ++i) {
+          if (geo.get_z_edges()[i] <= z0 + 20.0f && geo.get_z_edges()[i+1] > z0 + 20.0f) {
+              z_index = i;
+              break;
+          }
+      }
+      if (z_index == -1) {
+          std::cerr << "Error: could not find 2cm slice" << std::endl;
+          return;
+      }
+
+      sprintf(buffer, "%f\\%f\\%f", geo.get_x_edges()[0], geo.get_y_edges()[0], geo.get_z_edges()[z_index]);
+      put_string(DCM_ImagePositionPatient, buffer);
+      put_string(DCM_SliceThickness, "1.0");
+
+      uint32_t slice_size = nxyz.x * nxyz.y;
+      uint16_t* pixel_data = new uint16_t[slice_size];
+      for (uint32_t i = 0; i < slice_size; ++i) {
+          pixel_data[i] = static_cast<uint16_t>((src[z_index * slice_size + i] * scale) / dose_grid_scaling);
+      }
+      dataset->putAndInsertUint16Array(DCM_PixelData, pixel_data, slice_size);
+      delete[] pixel_data;
+
+  } else {
+      dataset->putAndInsertUint16(DCM_NumberOfFrames, nxyz.z);
+      sprintf(buffer, "%f\\%f\\%f", geo.get_x_edges()[0], geo.get_y_edges()[0], z0);
+      put_string(DCM_ImagePositionPatient, buffer);
+
+      OFString grid_frame_offset_vector = "0";
+      float current_offset = 0.0f;
+      for (int i = 0; i < nxyz.z -1; ++i) {
+          float dz = geo.get_z_edges()[i+1] - geo.get_z_edges()[i];
+          current_offset += dz;
+          sprintf(buffer, "\\%f", current_offset);
+          grid_frame_offset_vector.append(buffer);
+      }
+      put_string(DCM_GridFrameOffsetVector, grid_frame_offset_vector.c_str());
+        uint16_t *pixel_data = new uint16_t[length];
+        for (uint32_t i = 0; i < length; ++i) {
+            pixel_data[i] = static_cast<uint16_t>((src[i] * scale) / dose_grid_scaling);
+        }
+        dataset->putAndInsertUint16Array(DCM_PixelData, pixel_data, length);
+        delete[] pixel_data;
+  }
+
+  // Pixel Data
+  put_string(DCM_PixelRepresentation, "0"); // Unsigned integer
+  put_string(DCM_BitsAllocated, "16");
+  put_string(DCM_BitsStored, "16");
+  put_string(DCM_HighBit, "15");
+
+
+  // Save file
+  std::string output_file = filepath + "/" + filename + ".dcm";
+  OFCondition status = fileformat.saveFile(output_file.c_str(), EXS_LittleEndianExplicit);
+  if (status.bad()) {
+    std::cerr << "Error: cannot write DICOM file " << output_file << " (" << status.text() << ")" << std::endl;
   }
 }
 
