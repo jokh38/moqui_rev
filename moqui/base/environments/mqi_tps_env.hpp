@@ -1637,15 +1637,15 @@ public:
         dim = this->world->children[c_ind]->geo->get_nxyz();
         vol_size = dim.x * dim.y * dim.z;
         reshaped_data = this->reshape_data(c_ind, s_ind, dim);
-        if (!this->output_format.compare("mhd")) {
+        if (strcasecmp(this->output_format.c_str(), "mhd") == 0) {
           mqi::io::save_to_mhd<R>(this->world->children[c_ind], reshaped_data,
                                   this->particles_per_history,
                                   this->output_path, filename, vol_size);
-        } else if (!this->output_format.compare("mha")) {
+        } else if (strcasecmp(this->output_format.c_str(), "mha") == 0) {
           mqi::io::save_to_mha<R>(this->world->children[c_ind], reshaped_data,
                                   this->particles_per_history,
                                   this->output_path, filename, vol_size);
-        } else if (!this->output_format.compare("dcm")) {
+        } else if (strcasecmp(this->output_format.c_str(), "dcm") == 0) {
           mqi::io::save_to_dcm<R>(this->world->children[c_ind], reshaped_data,
                                  this->particles_per_history,
                                  this->output_path, filename, vol_size,
