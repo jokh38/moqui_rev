@@ -112,6 +112,11 @@ if(DCMTK_FOUND)
     message(STATUS "DCMTK found - enabling DICOM RT support")
     include_directories(${DCMTK_INCLUDE_DIRS})
     target_link_libraries(tps_env PRIVATE ${DCMTK_LIBRARIES})
+    # Define DCMTK_FOUND for conditional compilation
+    target_compile_definitions(tps_env PRIVATE DCMTK_FOUND=1)
 else()
     message(WARNING "DCMTK not found - compiling without DICOM RT support")
+    message(STATUS "DICOM RT Dose output will fall back to MHD format")
+    # Define that DCMTK is not found for conditional compilation
+    target_compile_definitions(tps_env PRIVATE DCMTK_FOUND=0)
 endif()

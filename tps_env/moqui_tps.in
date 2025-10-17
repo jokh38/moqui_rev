@@ -48,7 +48,7 @@ ROIName External
 ## Source parameters
 SourceType FluenceMap
 SimulationType perBeam
-BeamNumbers 0
+BeamNumbers 1
 ParticlesPerHistory 0.0001 # Scale factor to select the number of primary particles
 
 ## Not implemented yet
