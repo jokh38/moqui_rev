@@ -118,9 +118,21 @@ The `tps_env/moqui_tps.in` file contains the TPS environment configuration that:
 
 The TPS environment depends on:
 - **Moqui Base Library**: Core simulation framework (moqui/base/)
-- **GDCM Library**: DICOM medical imaging support
+- **GDCM Library**: DICOM medical imaging support (for reading CT, RTPLAN, RTSTRUCT files)
+- **DCMTK Library**: DICOM RT Dose output support (for writing RT Dose files)
 - **CUDA Runtime**: GPU acceleration support (when compiled with CUDA)
 - **Standard C++ Libraries**: iostream, chrono, etc.
+
+### DICOM Support Requirements
+
+**For Basic DICOM Operations (Required):**
+- **GDCM Library**: Must be installed for reading DICOM files (CT images, RT structures, RT plans)
+
+**For DICOM RT Dose Output (Optional):**
+- **DCMTK Library**: Optional library for writing DICOM RT Dose files
+  - If not installed, the system will automatically fall back to MHD format
+  - Install with: `sudo apt-get install libdcmtk-dev dcmtk` (Ubuntu/Debian)
+  - Other platforms: `brew install dcmtk` (macOS), `sudo yum install dcmtk-devel` (RHEL/CentOS)
 
 ## Build Targets
 

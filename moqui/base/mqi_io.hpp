@@ -19,13 +19,15 @@
 #include "mqi_sparse_io.hpp"
 #include "mqi_dicom.hpp"
 
-// DCMTK headers
-#include <dcmtk/dcmdata/dctk.h>
-#include <dcmtk/dcmdata/dcfilefo.h>
-#include <dcmtk/dcmdata/dcdeftag.h>
-#include <dcmtk/dcmdata/dcdatset.h>
-#include <dcmtk/ofstd/ofcond.h>
-#include <dcmtk/ofstd/ofstring.h>
+// DCMTK headers - only include if DCMTK is available
+#if DCMTK_FOUND
+  #include <dcmtk/dcmdata/dctk.h>
+  #include <dcmtk/dcmdata/dcfilefo.h>
+  #include <dcmtk/dcmdata/dcdeftag.h>
+  #include <dcmtk/dcmdata/dcdatset.h>
+  #include <dcmtk/ofstd/ofcond.h>
+  #include <dcmtk/ofstd/ofstring.h>
+#endif
 
 
 namespace mqi {
@@ -617,6 +619,8 @@ void mqi::io::save_to_dcm(const mqi::node_t<R> *child, const double *src,
                           const R scale, const std::string &filepath,
                           const std::string &filename, const uint32_t length,
                           const mqi::dicom_t &dcm_info, bool two_cm_mode) {
+#if DCMTK_FOUND
+  // Full DCMTK implementation
   // Input validation
   if (!child) {
     std::cerr << "Error: child node is null" << std::endl;
@@ -818,10 +822,30 @@ void mqi::io::save_to_dcm(const mqi::node_t<R> *child, const double *src,
 
   // Save file
   std::string output_file = filepath + "/" + filename + ".dcm";
-  OFCondition status = fileformat.saveFile(output_file.c_str(), EXS_LittleEndianExplicit);
-  if (status.bad()) {
-    std::cerr << "Error: cannot write DICOM file " << output_file << " (" << status.text() << ")" << std::endl;
+  OFCondition save_status = fileformat.saveFile(output_file.c_str(), EXS_LittleEndianExplicit);
+  if (save_status.bad()) {
+    std::cerr << "Error: cannot write DICOM file " << output_file << " (" << save_status.text() << ")" << std::endl;
   }
+#else
+  // Fallback implementation when DCMTK is not available
+  std::cerr << "=================================================================" << std::endl;
+  std::cerr << "ERROR: DCMTK library not found - DICOM RT Dose output disabled" << std::endl;
+  std::cerr << "=================================================================" << std::endl;
+  std::cerr << "To enable DICOM output functionality, please install DCMTK:" << std::endl;
+  std::cerr << "  Ubuntu/Debian: sudo apt-get install libdcmtk-dev dcmtk" << std::endl;
+  std::cerr << "  CentOS/RHEL:   sudo yum install dcmtk-devel" << std::endl;
+  std::cerr << "  macOS:         brew install dcmtk" << std::endl;
+  std::cerr << std::endl;
+  std::cerr << "Alternatively, use a different output format:" << std::endl;
+  std::cerr << "  - OutputFormat mhd (MetaImage format)" << std::endl;
+  std::cerr << "  - OutputFormat mha (MetaImage format)" << std::endl;
+  std::cerr << "  - OutputFormat raw (raw binary format)" << std::endl;
+  std::cerr << "=================================================================" << std::endl;
+
+  // Save as MHD format as fallback
+  std::cout << "Falling back to MHD format output..." << std::endl;
+  mqi::io::save_to_mhd<R>(child, src, scale, filepath, filename, length);
+#endif
 }
 
 #endif
