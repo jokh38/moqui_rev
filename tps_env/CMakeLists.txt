@@ -103,3 +103,15 @@ else()
             ${COREFOUNDATION_LIBRARY}
             )
 endif()
+
+
+# Try to find DCMTK
+find_package(DCMTK)
+
+if(DCMTK_FOUND)
+    message(STATUS "DCMTK found - enabling DICOM RT support")
+    include_directories(${DCMTK_INCLUDE_DIRS})
+    target_link_libraries(tps_env PRIVATE ${DCMTK_LIBRARIES})
+else()
+    message(WARNING "DCMTK not found - compiling without DICOM RT support")
+endif()

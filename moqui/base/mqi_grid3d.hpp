@@ -296,17 +296,17 @@ public:
   }
 
   CUDA_HOST_DEVICE
-  virtual R *get_x_edges() { return xe_; }
+  virtual const R *get_x_edges() const { return xe_; }
 
   CUDA_HOST_DEVICE
-  virtual R *get_y_edges() { return ye_; }
+  virtual const R *get_y_edges() const { return ye_; }
 
   CUDA_HOST_DEVICE
-  virtual R *get_z_edges() { return ze_; }
+  virtual const R *get_z_edges() const { return ze_; }
 
   /// Returns number of bins box
   CUDA_HOST_DEVICE
-  mqi::vec3<ijk_t> get_nxyz() { return dim_; }
+  mqi::vec3<ijk_t> get_nxyz() const { return dim_; }
 
   /// Returns the data value for given x/y/z index
   /// \param[in] p index, p[0], p[1], p[2] for x, y, z.
