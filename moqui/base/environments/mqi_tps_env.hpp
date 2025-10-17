@@ -186,7 +186,7 @@ public:
 
     // Check if you want to use water phantom geometry
     this->usingPhantomGeo = parser.get_bool("UsingPhantomGeo", false);
-    this->twoCentimeterMode = parser.get_bool("twoCentimeterMode", false);
+    this->twoCentimeterMode = parser.get_bool("TwoCentimeterMode", false);
     this->phantomDimX = parser.get_int("PhantomDimX", 200);
     this->phantomDimY = parser.get_int("PhantomDimY", 200);
     this->phantomDimZ = parser.get_int("PhantomDimZ", 200);

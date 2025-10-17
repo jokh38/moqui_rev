@@ -56,5 +56,5 @@ ScoreToCTGrid true
 
 ## Output path
 OutputDir data/output/spotplan_3090 # output directory
-OutputFormat raw # output format (raw, mhd, mha, npz)
+OutputFormat dcm # output format (raw, mhd, mha, npz)
 OverwriteResults true
