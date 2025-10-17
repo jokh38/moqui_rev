@@ -7,6 +7,7 @@ option(GPU "Enable GPU support" OFF)
 add_executable(tps_env tps_env.cpp)
 
 # Link with basic libraries for now
+add_dependencies(tps_env moqui_rev_lib)
 target_link_libraries(tps_env PRIVATE moqui_rev_lib)
 
 # Disable warnings as errors for tps_env targets
