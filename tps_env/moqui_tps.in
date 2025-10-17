@@ -1,7 +1,7 @@
 
 ## Global parameters for simulation
 
-GPUID 2 # 0-9 number
+GPUID 0 # 0-9 number
 RandomSeed -1932780356 # (integer, use negative value if use current time)
 UseAbsolutePath false
 TotalThreads -1 #(Integer, use negative value for using optimized number of threads)
@@ -26,7 +26,7 @@ GantryNum 1
 UsingPhantomGeo true
 
 ## While you use phantom geometry, program with two centimeter mode can get exact 2 cm position slice dose
-TwoCentimeterMode false
+TwoCentimeterMode true
 
 ## Phantom information. Two centimeter mode overrides this setting (no effect).
 PhantomDimX 180
@@ -49,7 +49,7 @@ ROIName External
 SourceType FluenceMap
 SimulationType perBeam
 BeamNumbers 0
-ParticlesPerHistory 0.001 # Scale factor to select the number of primary particles
+ParticlesPerHistory 0.0001 # Scale factor to select the number of primary particles
 
 ## Not implemented yet
 ScoreToCTGrid true
